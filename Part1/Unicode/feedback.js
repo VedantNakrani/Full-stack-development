@@ -5,10 +5,19 @@ const Button = ({handleClick, text}) => (
     <button onClick = {handleClick}>{text}</button>
 )
 
-const Statistic = (props) => {
+const StatText = (props) => {
     return (
-    <div>{props.text}: {props.value}</div>
+    <div>
+      {props.text}
+    </div>
     )
+}
+const StatValue = (props) => {
+  return (
+  <div>
+    {props.value}
+  </div>
+  )
 }
 
 const Statistics = (props) => {
@@ -20,12 +29,32 @@ const Statistics = (props) => {
   return (
     <div>
       <h1>Statistics</h1>
-      <Statistic value = {props.feedback.good} text = 'Good' /><br></br>
-      <Statistic value = {props.feedback.neutral} text = 'Neutral' /><br></br>
-      <Statistic value = {props.feedback.bad} text = 'Bad' /><br></br>
-      <Statistic value = {props.total} text = 'Total' /><br></br>
-      <Statistic value = {props.average/props.total} text = 'Average' /><br></br>
-      <Statistic value = {props.feedback.good/props.total * 100} text = 'Positive' />
+      <table>
+        <tr>
+          <td><StatText text = 'Good' /></td>
+          <td><StatValue value = {props.feedback.good} /></td>
+        </tr>
+        <tr>
+          <td><StatText text = 'Neutral' /></td>
+          <td><StatValue value = {props.feedback.neutral} /></td>
+        </tr>
+        <tr>
+          <td><StatText text = 'Bad' /></td>
+          <td><StatValue value = {props.feedback.bad} /></td>
+        </tr>
+        <tr>
+          <td><StatText text = 'Total' /></td>
+          <td><StatValue value = {props.total} /></td>
+        </tr>
+        <tr>
+          <td><StatText text = 'Average' /></td>
+          <td><StatValue value = {props.average/props.total} /></td>
+        </tr>
+        <tr>
+          <td><StatText text = 'Positive' /></td>
+          <td><StatValue value = {props.feedback.good/props.total * 100} /></td>
+        </tr>
+      </table>
     </div>
   )
 }

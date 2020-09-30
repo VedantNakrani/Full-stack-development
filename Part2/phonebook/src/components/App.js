@@ -3,6 +3,8 @@ import Person from './Person'
 import Filter from './Filter'
 import PersonForm from './PersonForm'
 import personService from './services/persons'
+import Notification from './Notification'
+import Message from './Message'
 
 const App = () => {
     
@@ -10,6 +12,8 @@ const App = () => {
     const [newName, setNewName] = useState('')
     const [newNumber, setNewNumber] = useState('')
     const [filter, setFilter] = useState('')
+    const [errorMessage, setErrorMessage] = useState(null)
+    const [message, setMessage] = useState(null)
     
     useEffect(() => {
         personService
@@ -31,19 +35,22 @@ const App = () => {
 
     const deletePerson = id => {
         
-        let deleted = true
         const person = persons.find(person => person.id === id)
         if(window.confirm('Delete ' + person.name + '?')) {
             personService
             .deleteObject(id)
             .catch((err) => {
-                console.log(err)
-                deleted = false
+                setErrorMessage('This number has already been deleted from the server.')
+                setTimeout(() => {
+                    setErrorMessage(null)
+                }, 3000)
             })
             .then(response => {
-                if(deleted) {
-                    setPersons(persons.filter(person => person.id !== id))
-                }
+                setMessage('The number has been deleted.')
+                setTimeout(() => {
+                    setMessage(null)
+                }, 3000)
+                setPersons(persons.filter(person => person.id !== id))
             })
         }
     }
@@ -60,6 +67,10 @@ const App = () => {
             personService
             .create(phoneObject)
             .then(returnedPerson => {
+                setMessage('The number has been added.')
+                setTimeout(() => {
+                    setMessage(null)
+                }, 3000)
                 setPersons(persons.concat(returnedPerson))
             })
             setNewName('')
@@ -72,6 +83,8 @@ const App = () => {
     return (
         <div>
             <h1>Phonebook</h1>
+            <Notification message = {errorMessage} />
+            <Message message = {message} />
             <h2>Search</h2>
             <Filter value = {filter} onChange = {handleFilter} />
             <h2>Add a number</h2>
